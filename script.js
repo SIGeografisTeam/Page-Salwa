@@ -236,6 +236,7 @@ document.querySelectorAll('.quantity-controls button').forEach(button => {
     });
 });
 
+// Fungsi untuk menghitung total
 function updateTotal() {
     let total = 0;
     document.querySelectorAll('.menu-item').forEach(item => {
