@@ -28,12 +28,11 @@ body {
 
 .main-container {
     width: 100%;
-    max-width: 1200px;
-    padding: 20px;
+    padding: 10px 20px;
     background-color: #2c2c2c; 
     margin: 20px auto; /* Menggunakan margin auto untuk membuat elemen di tengah */
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Tambahkan bayangan untuk efek visual */
-    border-radius: 10px; /* Opsional: menambahkan border-radius untuk tampilan lebih lembut */
+    border-radius: 20px; /* Opsional: menambahkan border-radius untuk tampilan lebih lembut */
 }
 
 
@@ -81,10 +80,21 @@ h2 {
     align-items: center;
 }
 
+.quantity-box {
+    border: 1px solid #d3d3d3; /* Warna batas kotak */
+    padding: 5px 20px; /* Ruang dalam kotak, mengubah padding horizontal untuk memperpanjang */
+    margin: 0 10px; /* Jarak antar tombol dan kotak */
+    border-radius: 5px; /* Sudut membulat */
+    background-color: #353434; /* Warna latar belakang kotak (abu muda) */
+    font-weight: bold; /* Menebalkan angka */
+    color: white; /* Warna teks dalam kotak */
+    min-width: 50px; /* Lebar minimum kotak untuk menambah panjang */
+}
+
 
 .qty-btn {
-    background-color: #ddd;
-    border: none;
+    background-color: #d3d3d3; /* Warna latar belakang tombol (abu muda) */
+    border: 1px solid #d3d3d3; /* Warna batas tombol */
     padding: 10px;
     cursor: pointer;
     font-size: 18px;
@@ -92,10 +102,11 @@ h2 {
     display: flex;
     justify-content: center;
     align-items: center;
+    border-radius: 5px; /* Sudut membulat */
 }
 
 .qty-btn:hover {
-    background-color: #ccc;
+    background-color: #b0b0b0; /* Warna saat hover (lebih gelap) */
 }
 
 .quantity-controls input[type="number"] {
