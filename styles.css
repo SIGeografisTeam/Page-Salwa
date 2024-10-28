@@ -6,12 +6,13 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
+    color: white;
+    background-color: #000;
 }
 
 .header {
     width: 100%;
-    background-color: #ffffff;
+    background-color: #2c2c2c; 
     padding: 10px 20px;
     text-align: center;
     border-radius: 20px; /* Membuat sisi header membulat */
@@ -29,7 +30,7 @@ body {
     width: 100%;
     max-width: 1200px;
     padding: 20px;
-    background-color: #ffffff;
+    background-color: #2c2c2c; 
     margin: 20px auto; /* Menggunakan margin auto untuk membuat elemen di tengah */
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Tambahkan bayangan untuk efek visual */
     border-radius: 10px; /* Opsional: menambahkan border-radius untuk tampilan lebih lembut */
@@ -39,7 +40,7 @@ body {
 h2 {
     text-align: center;
     margin-bottom: 20px;
-    color: #333;
+    color: white;
 }
 
 .menu-grid {
@@ -50,7 +51,7 @@ h2 {
 }
 
 .menu-item {
-    background-color: #f9f9f9;
+    background-color: #2c2c2c; 
     padding: 15px;
     border-radius: 10px;
     text-align: center;
@@ -182,7 +183,7 @@ h2 {
     padding: 10px 0;
     text-align: center;
     font-size: 14px;
-    color: #333;
+    color: white;
     margin-top: 40px;
 }
 
