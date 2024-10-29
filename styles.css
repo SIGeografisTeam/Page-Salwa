@@ -60,6 +60,12 @@ h2 {
     justify-content: space-between;
     height: 100%;
 }
+.menu-item img {
+    width: 100%; /* Mengatur lebar gambar untuk memenuhi kotak */
+    height: 300px; /* Menetapkan tinggi gambar */
+    object-fit: cover; /* Memastikan gambar terpotong dan tetap proporsional */
+    border-radius: 5px; /* Jika ingin sudut gambar melengkung */
+}
 
 
 .menu-footer {
