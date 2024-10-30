@@ -125,8 +125,8 @@ h2 {
     cursor: pointer;
     transition: background-color 0.2s ease;
 }
-.qty-btn:hover {
-    background-color: #b0b0b0; /* Warna saat hover (lebih gelap) */
+.quantity-controls button:hover {
+    background-color: #ffc15e; /* Warna tombol saat di-hover */
 }
 
 .quantity-controls input[type="number"] {
