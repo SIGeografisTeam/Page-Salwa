@@ -114,19 +114,17 @@ h2 {
 }
 
 
-.qty-btn {
-    background-color: #d3d3d3; /* Warna latar belakang tombol (abu muda) */
-    border: 1px solid #d3d3d3; /* Warna batas tombol */
-    padding: 10px;
+.quantity-controls button {
+    background-color: #FDA521; /* Warna tombol kontras */
+    color: #1e1e1e;
+    border: none;
+    padding: 4px 8px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 4px;
     cursor: pointer;
-    font-size: 18px;
-    height: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 5px; /* Sudut membulat */
+    transition: background-color 0.2s ease;
 }
-
 .qty-btn:hover {
     background-color: #b0b0b0; /* Warna saat hover (lebih gelap) */
 }
