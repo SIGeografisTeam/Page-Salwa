@@ -77,7 +77,12 @@ h2 {
     border-radius: 5px; /* Jika ingin sudut gambar melengkung */
 }
 
-
+.menu-item p {
+    font-size: 15px; /* Ukuran font harga lebih kecil */
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: #FFD700; /* Warna harga agar lebih terlihat */
+}
 .menu-footer {
     display: flex;
     flex-direction: column; /* Ubah tata letak menjadi kolom */
