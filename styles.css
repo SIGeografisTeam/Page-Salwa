@@ -103,14 +103,14 @@ h2 {
 }
 
 .quantity-box {
-    border: 1px solid #d3d3d3; /* Warna batas kotak */
-    padding: 5px 20px; /* Ruang dalam kotak, mengubah padding horizontal untuk memperpanjang */
-    margin: 0 10px; /* Jarak antar tombol dan kotak */
-    border-radius: 5px; /* Sudut membulat */
-    background-color: #353434; /* Warna latar belakang kotak (abu muda) */
-    font-weight: bold; /* Menebalkan angka */
-    color: white; /* Warna teks dalam kotak */
-    min-width: 50px; /* Lebar minimum kotak untuk menambah panjang */
+    background-color: #f5f5f5; /* Warna latar belakang quantity box */
+    color: #333;
+    padding: 5px 19px;
+    border-radius: 4px;
+    font-size: 15px;
+    font-weight: bold;
+    min-width: 30px;
+    text-align: center;
 }
 
 
@@ -118,7 +118,7 @@ h2 {
     background-color: #FDA521; /* Warna tombol kontras */
     color: #1e1e1e;
     border: none;
-    padding: 4px 8px;
+    padding: 5px 10px;
     font-size: 14px;
     font-weight: bold;
     border-radius: 4px;
