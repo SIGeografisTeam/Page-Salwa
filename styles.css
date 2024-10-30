@@ -64,6 +64,12 @@ h2 {
     transform: translateY(-5px); /* Efek mengangkat saat di-hover */
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Bayangan saat di-hover */
 }
+.menu-item h3 {
+    font-size: 20px; /* Ukuran font judul lebih kecil */
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #FDA521; /* Warna judul untuk kontras */
+}
 .menu-item img {
     width: 100%; /* Mengatur lebar gambar untuk memenuhi kotak */
     height: 300px; /* Menetapkan tinggi gambar */
