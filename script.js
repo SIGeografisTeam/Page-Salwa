@@ -187,62 +187,43 @@ document.getElementById('whatsappLink').addEventListener('click', function(event
 });
 
 
-
-
 function getLastPathSegment() {
-    // Ambil pathname dari URL
     let pathname = window.location.pathname;
-
-    // Hapus leading slash dan trailing slash jika ada
     pathname = pathname.replace(/^\/|\/$/g, '');
-
-    // Pisahkan pathname menjadi bagian-bagian
     let parts = pathname.split('/');
-
-    // Ambil bagian terakhir dari URL
     return parts[parts.length - 1];
 }
+
+// Menambahkan event listener untuk semua item pada menu
 document.querySelectorAll('.menu-item').forEach(item => {
     const minusButton = item.querySelector('.quantity-controls button:first-child');
     const plusButton = item.querySelector('.quantity-controls button:last-child');
     const quantityBox = item.querySelector('.quantity-box');
+    const itemPriceText = item.querySelector('p').innerText;
+    const itemPrice = parseInt(itemPriceText.replace(/[^0-9]/g, '')); // Hanya angka
 
-    minusButton.addEventListener('click', () => {
-        let currentQuantity = parseInt(quantityBox.innerText);
-        if (currentQuantity > 0) quantityBox.innerText = currentQuantity - 1;
-    });
-
-    plusButton.addEventListener('click', () => {
-        let currentQuantity = parseInt(quantityBox.innerText);
-        quantityBox.innerText = currentQuantity + 1;
-    });
-});
-document.querySelectorAll('.quantity-controls button').forEach(button => {
-    button.addEventListener('click', (event) => {
-        const quantityBox = event.target.parentElement.querySelector('.quantity-box');
-        let quantity = parseInt(quantityBox.innerText);
-        
-        // Memperbarui jumlah sesuai tombol yang diklik
-        if (event.target.classList.contains('increase')) {
-            quantity++; // Tambah 1 jika tombol '+' diklik
-        } else if (event.target.classList.contains('decrease')) {
-            if (quantity > 0) {
-                quantity--; // Kurang 1 jika tombol '-' diklik dan jumlah lebih dari 0
-            }
-        }
-        
-        quantityBox.innerText = quantity; // Update tampilan jumlah
+    // Fungsi untuk memperbarui jumlah dan total
+    const updateQuantity = (change) => {
+        let currentQuantity = parseInt(quantityBox.innerText) || 0; // Default ke 0 jika NaN
+        currentQuantity = Math.max(0, currentQuantity + change); // Tidak boleh kurang dari 0
+        quantityBox.innerText = currentQuantity;
         updateTotal(); // Panggil fungsi untuk memperbarui total
-    });
+    };
+
+    // Event listener untuk tombol kurang
+    minusButton.addEventListener('click', () => updateQuantity(-1));
+
+    // Event listener untuk tombol tambah
+    plusButton.addEventListener('click', () => updateQuantity(1));
 });
 
-// Fungsi untuk menghitung total
+// Fungsi untuk menghitung total harga
 function updateTotal() {
     let total = 0;
     document.querySelectorAll('.menu-item').forEach(item => {
-        const quantity = parseInt(item.querySelector('.quantity-box').innerText);
+        const quantity = parseInt(item.querySelector('.quantity-box').innerText) || 0; // Default ke 0 jika NaN
         const itemPriceText = item.querySelector('p').innerText;
-        const itemPrice = parseInt(itemPriceText.replace('Rp ', '').replace('.', '').replace(',', '')); // Menghilangkan "Rp " dan titik
+        const itemPrice = parseInt(itemPriceText.replace(/[^0-9]/g, '')) || 0; // Hanya angka dan default ke 0 jika NaN
 
         total += quantity * itemPrice; // Menghitung total harga
     });
