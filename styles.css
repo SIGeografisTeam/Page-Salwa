@@ -1,4 +1,4 @@
-* {
+* * {
     box-sizing: border-box; /* Pastikan padding dan border termasuk dalam ukuran elemen */
 }
 
@@ -35,11 +35,10 @@ body {
     border-radius: 20px; /* Opsional: menambahkan border-radius untuk tampilan lebih lembut */
 }
 
-
 h2 {
     text-align: center;
     margin-bottom: 20px;
-    color: white;
+    color: #FDA521; 
 }
 
 .menu-grid {
@@ -64,17 +63,25 @@ h2 {
     transform: translateY(-5px); /* Efek mengangkat saat di-hover */
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Bayangan saat di-hover */
 }
+
 .menu-item h3 {
     font-size: 20px; /* Ukuran font judul lebih kecil */
     margin-bottom: 8px;
     font-weight: bold;
     color: #FDA521; /* Warna judul untuk kontras */
 }
+
 .menu-item img {
     width: 100%; /* Mengatur lebar gambar untuk memenuhi kotak */
     height: 300px; /* Menetapkan tinggi gambar */
     object-fit: cover; /* Memastikan gambar terpotong dan tetap proporsional */
     border-radius: 5px; /* Jika ingin sudut gambar melengkung */
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.menu-item img:hover {
+    transform: scale(1.05);
+    opacity: 0.9;
 }
 
 .menu-item p {
@@ -83,6 +90,7 @@ h2 {
     margin-bottom: 12px;
     color: #FFD700; /* Warna harga agar lebih terlihat */
 }
+
 .menu-footer {
     display: flex;
     flex-direction: column; /* Ubah tata letak menjadi kolom */
@@ -113,7 +121,6 @@ h2 {
     text-align: center;
 }
 
-
 .quantity-controls button {
     background-color: #FDA521; /* Warna tombol kontras */
     color: #1e1e1e;
@@ -121,7 +128,7 @@ h2 {
     padding: 5px 10px;
     font-size: 14px;
     font-weight: bold;
-    border-radius: 4px;
+    border-radius: 20px; /* Bentuk tombol lebih bulat */
     cursor: pointer;
     transition: background-color 0.2s ease;
 }
@@ -167,16 +174,18 @@ h2 {
 
 .whatsapp-button {
     display: inline-block;
-    padding: 10px 20px;
+    padding: 12px 20px;
     background-color: #25d366;
     color: white;
     text-decoration: none;
-    border-radius: 5px;
+    border-radius: 8px;
     font-size: 1em;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
 }
 
 .whatsapp-button:hover {
-    background-color: #20b358;
+    background-color: #128C7E;
 }
 
 .modal {
@@ -253,7 +262,7 @@ h2 {
 }
 
 .footer-content a {
-    color: #333;
+    color: white;
     text-decoration: none;
     border-bottom: 1px solid #333;
     font-size: 14px;
