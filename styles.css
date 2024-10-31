@@ -111,9 +111,9 @@ h2 {
 }
 
 .quantity-box {
-    background-color: #f5f5f5; /* Warna latar belakang quantity box */
+    background-color: #f5f5f5;
     color: #333;
-    padding: 5px 19px;
+    padding: 5px 15px;
     border-radius: 4px;
     font-size: 15px;
     font-weight: bold;
@@ -122,18 +122,24 @@ h2 {
 }
 
 .quantity-controls button {
-    background-color: #FDA521; /* Warna tombol kontras */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #FDA521;
     color: #1e1e1e;
     border: none;
-    padding: 5px 10px;
-    font-size: 14px;
+    width: 25px; /* Lebar tombol lebih kecil */
+    height: 25px; /* Tinggi tombol lebih kecil */
+    font-size: 15px; /* Ukuran ikon */
     font-weight: bold;
-    border-radius: 20px; /* Bentuk tombol lebih bulat */
+    border-radius: 8px; /* Sudut membulat tetapi tidak terlalu bulat */
     cursor: pointer;
     transition: background-color 0.2s ease;
+    padding: 0;
 }
+
 .quantity-controls button:hover {
-    background-color: #ffc15e; /* Warna tombol saat di-hover */
+    background-color: #ffc15e;
 }
 
 .quantity-controls input[type="number"] {
@@ -152,9 +158,35 @@ h2 {
     margin: 0;
 }
 
+.menu-item h3 i,
+.menu-item p i {
+    color: white;
+    margin-right: 5px; /* Atur jarak sesuai kebutuhan Anda */
+}
+
+
+.quantity-controls button i {
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .total-container {
     text-align: center;
     margin-top: 40px;
+}
+
+.payment-method select {
+    padding: 1px;
+    font-size: 15px;
+    border-radius: 3px;
+    border: none;
+    outline: none;
+    background-color: white;
+    color: black;
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
 
 .total-container h2 {
@@ -173,19 +205,17 @@ h2 {
 }
 
 .whatsapp-button {
-    display: inline-block;
-    padding: 12px 20px;
-    background-color: #25d366;
-    color: white;
-    text-decoration: none;
-    border-radius: 8px;
-    font-size: 1em;
+    background-color: #28a745;
+    padding: 10px 20px;
+    font-size: 16px;
     font-weight: bold;
-    transition: background-color 0.3s ease;
+    border-radius: 5px;
+    transition: all 0.3s;
 }
 
 .whatsapp-button:hover {
-    background-color: #128C7E;
+    background-color: #218838;
+    transform: scale(1.05);
 }
 
 .modal {
