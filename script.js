@@ -1,8 +1,7 @@
-import { postJSON } from 'https://cdn.jsdelivr.net/gh/jscroot/lib@0.0.4/api.js';  // Sesuaikan path sesuai dengan lokasi file Anda
-import {onClick} from 'https://cdn.jsdelivr.net/gh/jscroot/lib@0.0.4/element.js';
+import { postJSON } from 'https://cdn.jsdelivr.net/gh/jscroot/lib@0.0.4/api.js';  
+import { onClick } from 'https://cdn.jsdelivr.net/gh/jscroot/lib@0.0.4/element.js';
 
-
-onClick('buttonsimpaninfouser',saveUserInfo);
+onClick('buttonsimpaninfouser', saveUserInfo);
 
 document.addEventListener('DOMContentLoaded', function() {
     checkCookies();
@@ -19,11 +18,7 @@ function checkCookies() {
     const userWhatsapp = getCookie("whatsapp");
     const userAddress = getCookie("address");
 
-    if (!userName || !userWhatsapp || !userAddress) {
-        document.getElementById('userModal').style.display = 'flex';
-    } else {
-        document.getElementById('userModal').style.display = 'none';
-    }
+    document.getElementById('userModal').style.display = userName && userWhatsapp && userAddress ? 'none' : 'flex';
 }
 
 function saveUserInfo() {
@@ -43,29 +38,25 @@ function saveUserInfo() {
 
 function setCookie(cname, cvalue, exdays) {
     const d = new Date();
-    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
     let expires = "expires=" + d.toUTCString();
-    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    document.cookie = `${cname}=${cvalue}; ${expires}; path=/`;
 }
 
 function getCookie(cname) {
-    let name = cname + "=";
+    let name = `${cname}=`;
     let decodedCookie = decodeURIComponent(document.cookie);
     let ca = decodedCookie.split(';');
-    for(let i = 0; i <ca.length; i++) {
-        let c = ca[i];
-        while (c.charAt(0) == ' ') {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-        }
+    for (let c of ca) {
+        c = c.trim();
+        if (c.indexOf(name) === 0) return c.substring(name.length, c.length);
     }
     return "";
 }
 
 function renderMenu(menuItems) {
     const menuGrid = document.getElementById('menuGrid');
+    menuGrid.innerHTML = ''; // Clear existing menu items
     menuItems.forEach(item => {
         const menuItem = document.createElement('div');
         menuItem.className = 'menu-item';
@@ -85,17 +76,12 @@ function renderMenu(menuItems) {
     });
 }
 
-
-//function changeQuantity(id, price, delta) {
 window.changeQuantity = function(id, price, delta) {
-    var qtyInput = document.getElementById(id);
-    var currentValue = parseInt(qtyInput.value);
-    if (!isNaN(currentValue)) {
-        qtyInput.value = Math.max(0, currentValue + delta); // Tidak boleh kurang dari 0
-    } else {
-        qtyInput.value = 0;
-    }
-    calculateTotal(); // Perbarui total setiap kali kuantitas berubah
+    const qtyInput = document.getElementById(id);
+    let currentValue = parseInt(qtyInput.value);
+    currentValue = !isNaN(currentValue) ? Math.max(0, currentValue + delta) : 0;
+    qtyInput.value = currentValue;
+    calculateTotal(); // Call calculateTotal every time quantity changes
 }
 
 function calculateTotal() {
@@ -118,9 +104,8 @@ function calculateTotal() {
         }
     });
 
-    document.getElementById('totalPrice').innerText = total.toLocaleString();
+    document.getElementById('totalPrice').innerText = `Rp ${total.toLocaleString()}`; // Display total price
 
-    // Update the order list
     const orderList = document.getElementById('orderList');
     orderList.innerHTML = '';
     orders.forEach(order => {
@@ -129,12 +114,10 @@ function calculateTotal() {
         orderList.appendChild(li);
     });
 
-    // Update WhatsApp link
     const whatsappLink = document.getElementById('whatsappLink');
     const message = `Saya ingin memesan:\n${orders.join('\n')}\n\nTotal: Rp ${total.toLocaleString()}\n\n${rek}\n\nNama: ${userName}\nNomor WhatsApp: ${userWhatsapp}\nAlamat: ${userAddress}`;
     whatsappLink.href = `https://wa.me/628111269691?text=${encodeURIComponent(message)}`;
 }
-
 
 document.getElementById('whatsappLink').addEventListener('click', function(event) {
     event.preventDefault();
@@ -181,11 +164,10 @@ document.getElementById('whatsappLink').addEventListener('click', function(event
         paymentMethod: paymentMethod // Tambahkan paymentMethod ke postData
     };
 
-    postJSON('https://asia-southeast2-awangga.cloudfunctions.net/jualin/data/order/'+getLastPathSegment(), 'login', '', postData, function(response) {
+    postJSON('https://asia-southeast2-awangga.cloudfunctions.net/jualin/data/order/' + getLastPathSegment(), 'login', '', postData, function(response) {
         console.log('API Response:', response);
     });
 });
-
 
 function getLastPathSegment() {
     let pathname = window.location.pathname;
@@ -198,16 +180,14 @@ function getLastPathSegment() {
 document.querySelectorAll('.menu-item').forEach(item => {
     const minusButton = item.querySelector('.quantity-controls button:first-child');
     const plusButton = item.querySelector('.quantity-controls button:last-child');
-    const quantityBox = item.querySelector('.quantity-box');
-    const itemPriceText = item.querySelector('p').innerText;
-    const itemPrice = parseInt(itemPriceText.replace(/[^0-9]/g, '')); // Hanya angka
+    const quantityBox = item.querySelector('input[type="number"]');
 
     // Fungsi untuk memperbarui jumlah dan total
     const updateQuantity = (change) => {
-        let currentQuantity = parseInt(quantityBox.innerText) || 0; // Default ke 0 jika NaN
+        let currentQuantity = parseInt(quantityBox.value) || 0; // Default ke 0 jika NaN
         currentQuantity = Math.max(0, currentQuantity + change); // Tidak boleh kurang dari 0
-        quantityBox.innerText = currentQuantity;
-        updateTotal(); // Panggil fungsi untuk memperbarui total
+        quantityBox.value = currentQuantity;
+        calculateTotal(); // Panggil fungsi untuk memperbarui total
     };
 
     // Event listener untuk tombol kurang
@@ -220,12 +200,14 @@ document.querySelectorAll('.menu-item').forEach(item => {
 // Fungsi untuk menghitung total harga
 function updateTotal() {
     let total = 0;
-    document.querySelectorAll('.menu-item').forEach(item => {
-        const quantity = parseInt(item.querySelector('.quantity-box').innerText) || 0; // Default ke 0 jika NaN
-        const itemPriceText = item.querySelector('p').innerText;
-        const itemPrice = parseInt(itemPriceText.replace(/[^0-9]/g, '')) || 0; // Hanya angka dan default ke 0 jika NaN
 
-        total += quantity * itemPrice; // Menghitung total harga
+    document.querySelectorAll('.menu-item').forEach(item => {
+        const quantity = parseInt(item.querySelector('input[type="number"]').value) || 0; // Default ke 0 jika NaN
+        const itemPriceText = item.querySelector('.price').innerText;
+        const itemPrice = parseInt(itemPriceText.replace(/[^0-9]/g, '')) || 0; // Ambil harga dari text dan convert ke number
+        total += quantity * itemPrice;
     });
-    document.getElementById('totalPrice').innerText = `Rp ${total.toLocaleString('id-ID')}`; // Memperbarui tampilan total dengan format Rp dan koma
+
+    // Update total
+    document.getElementById('totalPrice').innerText = `Total: Rp ${total.toLocaleString()}`;
 }
