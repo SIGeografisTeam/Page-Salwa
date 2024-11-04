@@ -5,12 +5,7 @@ onClick('buttonsimpaninfouser', saveUserInfo);
 
 document.addEventListener('DOMContentLoaded', function() {
     checkCookies();
-    fetch('./data/menu.json')
-        .then(response => response.json())
-        .then(data => {
-            renderMenu(data);
-        })
-        .catch(error => console.error('Error loading menu:', error));
+    loadMenu(); // Panggil loadMenu di sini
 });
 
 function checkCookies() {
@@ -54,44 +49,44 @@ function getCookie(cname) {
     return "";
 }
 
-function renderMenu(menuItems) {
-    const menuGrid = document.getElementById('menuGrid');
-    menuGrid.innerHTML = ''; // Clear existing menu items
-    menuItems.forEach(item => {
-        const menuItem = document.createElement('div');
-        menuItem.className = 'menu-item';
-        menuItem.innerHTML = `
-            <h3>${item.name}</h3>
-            <img src="./menu/${item.image}" alt="${item.name}" class="menu-image">
-            <div class="menu-footer">
-                <p class="price">Rp ${item.price.toLocaleString()}</p>
+// Fungsi untuk mengambil dan menampilkan menu dari data/menu.json
+async function loadMenu() {
+    try {
+        const response = await fetch('data/menu.json');
+        const menuData = await response.json();
+
+        const menuContainer = document.getElementById('menu-container');
+        menuContainer.innerHTML = menuData.map(item => `
+            <div class="menu-item">
+                <h3><i class="fas fa-utensils"></i> ${item.name}</h3>
+                <img src="menu/${item.image}" alt="${item.name}">
+                <p><i class="fas fa-tag"></i> Rp${item.price.toLocaleString('id-ID')}</p>
                 <div class="quantity-controls">
-                    <button type="button" class="qty-btn" onclick="changeQuantity('qty${item.id}', ${item.price}, -1)">-</button>
-                    <input type="number" id="qty${item.id}" name="qty${item.id}" value="0" min="0" data-price="${item.price}" data-name="${item.name}" onchange="calculateTotal()">
-                    <button type="button" class="qty-btn" onclick="changeQuantity('qty${item.id}', ${item.price}, 1)">+</button>
+                    <button onclick="changeQuantity('qty${item.id}', ${item.price}, -1)"><i class="fas fa-minus"></i></button>
+                    <input type="number" id="qty${item.id}" value="0" min="0" data-price="${item.price}" data-name="${item.name}" onchange="calculateTotal()">
+                    <button onclick="changeQuantity('qty${item.id}', ${item.price}, 1)"><i class="fas fa-plus"></i></button>
                 </div>
             </div>
-        `;
-        menuGrid.appendChild(menuItem);
-    });
+        `).join('');
+    } catch (error) {
+        console.error('Gagal memuat menu:', error);
+    }
 }
 
+// Fungsi untuk mengubah jumlah item
 window.changeQuantity = function(id, price, delta) {
     const qtyInput = document.getElementById(id);
     let currentValue = parseInt(qtyInput.value);
     currentValue = !isNaN(currentValue) ? Math.max(0, currentValue + delta) : 0;
     qtyInput.value = currentValue;
-    calculateTotal(); // Call calculateTotal every time quantity changes
+    calculateTotal(); // Panggil calculateTotal setiap kali kuantitas berubah
 }
 
+// Fungsi untuk menghitung total harga
 function calculateTotal() {
     const inputs = document.querySelectorAll('input[type="number"]');
     let total = 0;
     let orders = [];
-    const rek = "Pembayaran akan dilakukan dengan transfer ke rekening\nBCA 7750878347\nNedi Sopian";
-    const userName = getCookie("name");
-    const userWhatsapp = getCookie("whatsapp");
-    const userAddress = getCookie("address");
 
     inputs.forEach(input => {
         const quantity = parseInt(input.value);
@@ -104,7 +99,7 @@ function calculateTotal() {
         }
     });
 
-    document.getElementById('totalPrice').innerText = `Rp ${total.toLocaleString()}`; // Display total price
+    document.getElementById('totalPrice').innerText = `Rp ${total.toLocaleString()}`; // Tampilkan total harga
 
     const orderList = document.getElementById('orderList');
     orderList.innerHTML = '';
@@ -114,100 +109,8 @@ function calculateTotal() {
         orderList.appendChild(li);
     });
 
+    // Update link WhatsApp
     const whatsappLink = document.getElementById('whatsappLink');
-    const message = `Saya ingin memesan:\n${orders.join('\n')}\n\nTotal: Rp ${total.toLocaleString()}\n\n${rek}\n\nNama: ${userName}\nNomor WhatsApp: ${userWhatsapp}\nAlamat: ${userAddress}`;
-    whatsappLink.href = `https://wa.me/628111269691?text=${encodeURIComponent(message)}`;
-}
-
-document.getElementById('whatsappLink').addEventListener('click', function(event) {
-    event.preventDefault();
-
-    const paymentMethod = document.getElementById('paymentMethod').value; // Ambil metode pembayaran yang dipilih
-    const rek = "Pembayaran akan dilakukan dengan transfer ke rekening\nBCA 2820321726\nKiki Santi Noviana";
-    const userName = getCookie("name");
-    const userWhatsapp = getCookie("whatsapp");
-    const userAddress = getCookie("address");
-    
-    const inputs = document.querySelectorAll('input[type="number"]');
-    let orders = [];
-    let total = 0;
-
-    inputs.forEach(input => {
-        const quantity = parseInt(input.value);
-        const price = parseInt(input.getAttribute('data-price'));
-        const name = input.getAttribute('data-name');
-
-        if (quantity > 0) {
-            total += quantity * price;
-            orders.push({ name, quantity, price: quantity * price });
-        }
-    });
-
-    let paymentInfo = paymentMethod === "Transfer" ? rek : "Pembayaran akan dilakukan dengan metode COD.";
-    
-    const message = `Saya ingin memesan:\n${orders.map(order => `${order.name} x${order.quantity} - Rp ${order.price.toLocaleString()}`).join('\n')}\n\nTotal: Rp ${total.toLocaleString()}\n\n${paymentInfo}\n\nNama: ${userName}\nNomor WhatsApp: ${userWhatsapp}\nAlamat: ${userAddress}`;
-    const whatsappUrl = `https://wa.me/628111269691?text=${encodeURIComponent(message)}`;
-
-    // Redirect to WhatsApp
-    window.open(whatsappUrl, '_blank');
-
-    // POST request to API
-    const postData = {
-        orders: orders,
-        total: total,
-        user: {
-            name: userName,
-            whatsapp: userWhatsapp,
-            address: userAddress
-        },
-        payment: paymentInfo,
-        paymentMethod: paymentMethod // Tambahkan paymentMethod ke postData
-    };
-
-    postJSON('https://asia-southeast2-awangga.cloudfunctions.net/jualin/data/order/' + getLastPathSegment(), 'login', '', postData, function(response) {
-        console.log('API Response:', response);
-    });
-});
-
-function getLastPathSegment() {
-    let pathname = window.location.pathname;
-    pathname = pathname.replace(/^\/|\/$/g, '');
-    let parts = pathname.split('/');
-    return parts[parts.length - 1];
-}
-
-// Menambahkan event listener untuk semua item pada menu
-document.querySelectorAll('.menu-item').forEach(item => {
-    const minusButton = item.querySelector('.quantity-controls button:first-child');
-    const plusButton = item.querySelector('.quantity-controls button:last-child');
-    const quantityBox = item.querySelector('input[type="number"]');
-
-    // Fungsi untuk memperbarui jumlah dan total
-    const updateQuantity = (change) => {
-        let currentQuantity = parseInt(quantityBox.value) || 0; // Default ke 0 jika NaN
-        currentQuantity = Math.max(0, currentQuantity + change); // Tidak boleh kurang dari 0
-        quantityBox.value = currentQuantity;
-        calculateTotal(); // Panggil fungsi untuk memperbarui total
-    };
-
-    // Event listener untuk tombol kurang
-    minusButton.addEventListener('click', () => updateQuantity(-1));
-
-    // Event listener untuk tombol tambah
-    plusButton.addEventListener('click', () => updateQuantity(1));
-});
-
-// Fungsi untuk menghitung total harga
-function updateTotal() {
-    let total = 0;
-
-    document.querySelectorAll('.menu-item').forEach(item => {
-        const quantity = parseInt(item.querySelector('input[type="number"]').value) || 0; // Default ke 0 jika NaN
-        const itemPriceText = item.querySelector('.price').innerText;
-        const itemPrice = parseInt(itemPriceText.replace(/[^0-9]/g, '')) || 0; // Ambil harga dari text dan convert ke number
-        total += quantity * itemPrice;
-    });
-
-    // Update total
-    document.getElementById('totalPrice').innerText = `Total: Rp ${total.toLocaleString()}`;
+    const message = `Saya ingin memesan:\n${orders.join('\n')}\n\nTotal: Rp ${total.toLocaleString()}`;
+    whatsappLink.href = `https://wa.me/?text=${encodeURIComponent(message)}`;
 }
